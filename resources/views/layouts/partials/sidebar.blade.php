@@ -66,17 +66,21 @@
                 <span id="arrow-it-support" class="text-xs transition-transform duration-200">▸</span>
             </button>
 
-            <div id="submenu-it-support" class="hidden space-y-0.5 ml-3 pl-4 border-l-2 border-white/10">
-                @foreach($itMenus as $slug => $menu)
-                    @if($user->hasPermission($slug))
-                        <a href="{{ route($slug . '.index') }}"
-                           class="submenu-link flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200
-                                  {{ $activeMenu === $slug ? 'active text-pln-blue-light bg-pln-blue/10' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
-                            <span>{{ $menu['icon'] }}</span>
-                            <span>{{ $menu['text'] }}</span>
-                        </a>
-                    @endif
-                @endforeach
+            <div id="submenu-it-support" class="submenu-wrapper overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0px;">
+                <div class="submenu-inner">
+                    <div class="space-y-0.5 ml-3 pl-4 border-l-2 border-white/10 mt-1 mb-1">
+                        @foreach($itMenus as $slug => $menu)
+                            @if($user->hasPermission($slug))
+                                <a href="{{ route($slug . '.index') }}"
+                                   class="submenu-link flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200
+                                          {{ $activeMenu === $slug ? 'active text-pln-blue-light bg-pln-blue/10' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
+                                    <span>{{ $menu['icon'] }}</span>
+                                    <span>{{ $menu['text'] }}</span>
+                                </a>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
             </div>
         @endif
 
@@ -92,22 +96,26 @@
                 <span id="arrow-admin" class="text-xs transition-transform duration-200">▸</span>
             </button>
 
-            <div id="submenu-admin" class="hidden space-y-0.5 ml-3 pl-4 border-l-2 border-white/10">
-                <a href="{{ route('admin.users.index') }}" class="submenu-link flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all {{ $activeMenu === 'master-user' ? 'active text-pln-yellow bg-pln-yellow/10' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
-                    <span>👥</span><span>Master User</span>
-                </a>
-                <a href="{{ route('admin.ruangan.index') }}" class="submenu-link flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all {{ $activeMenu === 'master-ruangan' ? 'active text-pln-yellow bg-pln-yellow/10' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
-                    <span>🏢</span><span>Master Ruangan</span>
-                </a>
-                <a href="{{ route('admin.it-support.index') }}" class="submenu-link flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all {{ $activeMenu === 'master-it-support' ? 'active text-pln-yellow bg-pln-yellow/10' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
-                    <span>👨‍💻</span><span>Master IT Support</span>
-                </a>
-                <a href="{{ route('admin.zoom.index') }}" class="submenu-link flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all {{ $activeMenu === 'master-zoom' ? 'active text-pln-yellow bg-pln-yellow/10' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
-                    <span>🎥</span><span>Master Zoom</span>
-                </a>
-                <a href="{{ route('admin.master-perangkat-aplikasi.index') }}" class="submenu-link flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all {{ $activeMenu === 'master-perangkat-aplikasi' ? 'active text-pln-yellow bg-pln-yellow/10' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
-                    <span>🖥️</span><span>Master Perangkat</span>
-                </a>
+            <div id="submenu-admin" class="submenu-wrapper overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0px;">
+                <div class="submenu-inner">
+                    <div class="space-y-0.5 ml-3 pl-4 border-l-2 border-white/10 mt-1 mb-1">
+                        <a href="{{ route('admin.users.index') }}" class="submenu-link flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all {{ $activeMenu === 'master-user' ? 'active text-pln-yellow bg-pln-yellow/10' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
+                            <span>👥</span><span>Master User</span>
+                        </a>
+                        <a href="{{ route('admin.ruangan.index') }}" class="submenu-link flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all {{ $activeMenu === 'master-ruangan' ? 'active text-pln-yellow bg-pln-yellow/10' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
+                            <span>🏢</span><span>Master Ruangan</span>
+                        </a>
+                        <a href="{{ route('admin.it-support.index') }}" class="submenu-link flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all {{ $activeMenu === 'master-it-support' ? 'active text-pln-yellow bg-pln-yellow/10' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
+                            <span>👨‍💻</span><span>Master IT Support</span>
+                        </a>
+                        <a href="{{ route('admin.zoom.index') }}" class="submenu-link flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all {{ $activeMenu === 'master-zoom' ? 'active text-pln-yellow bg-pln-yellow/10' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
+                            <span>🎥</span><span>Master Zoom</span>
+                        </a>
+                        <a href="{{ route('admin.master-perangkat-aplikasi.index') }}" class="submenu-link flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all {{ $activeMenu === 'master-perangkat-aplikasi' ? 'active text-pln-yellow bg-pln-yellow/10' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
+                            <span>🖥️</span><span>Master Perangkat</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         @endif
 

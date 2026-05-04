@@ -68,7 +68,8 @@
                 sidebar.classList.toggle('-translate-x-full');
                 overlay.classList.toggle('hidden');
             } else {
-                sidebar.classList.toggle('-translate-x-full');
+                sidebar.classList.toggle('lg:translate-x-0');
+                sidebar.classList.toggle('lg:-translate-x-full');
                 main.classList.toggle('lg:ml-[270px]');
                 main.classList.toggle('lg:ml-0');
             }
@@ -77,17 +78,33 @@
         function toggleSubmenu(name) {
             const submenu = document.getElementById('submenu-' + name);
             const arrow = document.getElementById('arrow-' + name);
-            submenu.classList.toggle('hidden');
-            arrow.classList.toggle('rotate-90');
+            
+            if (submenu.classList.contains('open')) {
+                submenu.classList.remove('open');
+                submenu.style.maxHeight = '0px';
+                arrow.classList.remove('rotate-90');
+            } else {
+                submenu.classList.add('open');
+                submenu.style.maxHeight = submenu.firstElementChild.scrollHeight + 'px';
+                arrow.classList.add('rotate-90');
+                
+                // Recalculate max-height after a small delay in case fonts/icons load
+                setTimeout(() => {
+                    if(submenu.classList.contains('open')) {
+                        submenu.style.maxHeight = submenu.firstElementChild.scrollHeight + 'px';
+                    }
+                }, 150);
+            }
         }
 
         // Auto-open active submenu
         document.addEventListener('DOMContentLoaded', function() {
             const activeItem = document.querySelector('.submenu-link.active');
             if (activeItem) {
-                const submenu = activeItem.closest('.submenu-panel');
+                const submenu = activeItem.closest('.submenu-wrapper');
                 if (submenu) {
-                    submenu.classList.remove('hidden');
+                    submenu.classList.add('open');
+                    submenu.style.maxHeight = submenu.firstElementChild.scrollHeight + 'px';
                     const arrowId = submenu.id.replace('submenu-', 'arrow-');
                     const arrow = document.getElementById(arrowId);
                     if (arrow) arrow.classList.add('rotate-90');
