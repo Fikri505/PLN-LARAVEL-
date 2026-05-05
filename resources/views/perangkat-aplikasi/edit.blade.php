@@ -1,59 +1,88 @@
-    @extends('layouts.app')
-@section('title', 'Edit Perangkat Aplikasi')
+@extends('layouts.app')
+@section('title', 'Edit ' . $tabLabels[$section])
+
 @section('content')
-<div class="w-full">
+<div class="max-w-xl mx-auto space-y-4">
+
+    {{-- Breadcrumb --}}
+    <div class="flex items-center gap-2 text-sm text-slate-500">
+        <a href="{{ route('admin.master-perangkat-aplikasi.index', ['section' => $section]) }}"
+           class="hover:text-primary transition-colors">
+            🗂️ Master Perangkat Aplikasi
+        </a>
+        <span>/</span>
+        <span class="text-slate-700 font-medium">Edit {{ $tabLabels[$section] }}</span>
+    </div>
+
+    {{-- Form Card --}}
     <div class="card animate-fade-in-up">
-        <div class="card-header flex items-center justify-between">
-            <h2 class="text-lg font-bold">✏️ Edit — {{ $item->jenis_perangkat }}</h2>
-            <a href="{{ route('perangkat-aplikasi.index') }}" class="btn btn-secondary btn-sm">← Kembali</a>
+        <div class="card-header">
+            <h2 class="text-base font-bold">✏️ Edit Data {{ $tabLabels[$section] }}</h2>
         </div>
+
         <div class="card-body">
-            <form method="POST" action="{{ route('perangkat-aplikasi.update', $item->id) }}" class="space-y-5">
-                @csrf @method('PUT')
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div><label class="form-label">Jenis Perangkat *</label>
-                        <select name="jenis_perangkat" class="form-select" required><option value="">-- Pilih --</option>
-                            @foreach($jenisOptions as $o)<option value="{{ $o }}" {{ old('jenis_perangkat', $item->jenis_perangkat) === $o ? 'selected' : '' }}>{{ $o }}</option>@endforeach
-                        </select></div>
-                    <div><label class="form-label">Brand</label>
-                        <select name="brand" class="form-select"><option value="">-- Pilih --</option>
-                            @foreach($brandOptions as $o)<option value="{{ $o }}" {{ old('brand', $item->brand) === $o ? 'selected' : '' }}>{{ $o }}</option>@endforeach
-                        </select></div>
+            <form method="POST"
+                  action="{{ route('admin.master-perangkat-aplikasi.update', $item->id) }}"
+                  class="space-y-5">
+                @csrf
+                @method('PUT')
+                <input type="hidden" name="type" value="{{ $section }}">
+
+                {{-- Nama --}}
+                <div>
+                    <label for="name" class="form-label">
+                        Nama {{ $tabLabels[$section] }} <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        class="form-input @error('name') border-red-500 @enderror"
+                        placeholder="Masukkan nama {{ strtolower($tabLabels[$section]) }}..."
+                        value="{{ old('name', $item->name) }}"
+                        required
+                        autofocus
+                    >
+                    @error('name')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div><label class="form-label">URL</label><input type="text" name="url" value="{{ old('url', $item->url) }}" class="form-input"></div>
-                    <div><label class="form-label">IP</label><input type="text" name="ip" value="{{ old('ip', $item->ip) }}" class="form-input"></div>
-                    <div><label class="form-label">Type</label><input type="text" name="type" value="{{ old('type', $item->type) }}" class="form-input"></div>
+
+                {{-- Info Section --}}
+                <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 text-sm text-slate-600">
+                    <span class="font-medium">Section:</span>
+                    @php
+                        $icons = [
+                            'jenis_perangkat' => '🖥️',
+                            'brand'           => '🏷️',
+                            'lokasi'          => '📍',
+                            'bidang'          => '🏢',
+                            'msb'             => '📋',
+                        ];
+                    @endphp
+                    {{ $icons[$section] ?? '📄' }} {{ $tabLabels[$section] }}
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div><label class="form-label">Server</label><input type="text" name="server" value="{{ old('server', $item->server) }}" class="form-input"></div>
-                    <div><label class="form-label">OS</label><input type="text" name="os" value="{{ old('os', $item->os) }}" class="form-input"></div>
-                    <div><label class="form-label">Pemilik Aset</label><input type="text" name="pemilik_aset" value="{{ old('pemilik_aset', $item->pemilik_aset) }}" class="form-input"></div>
+
+                {{-- Info ID --}}
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-600">
+                    <span class="font-medium">ID Data:</span> #{{ $item->id }}
+                    &nbsp;|&nbsp;
+                    <span class="font-medium">Nama saat ini:</span> {{ $item->name }}
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div><label class="form-label">Lokasi</label>
-                        <select name="lokasi" class="form-select"><option value="">--</option>@foreach($lokasiOptions as $o)<option value="{{ $o }}" {{ old('lokasi', $item->lokasi) === $o ? 'selected' : '' }}>{{ $o }}</option>@endforeach</select></div>
-                    <div><label class="form-label">Bidang</label>
-                        <select name="bidang" class="form-select"><option value="">--</option>@foreach($bidangOptions as $o)<option value="{{ $o }}" {{ old('bidang', $item->bidang) === $o ? 'selected' : '' }}>{{ $o }}</option>@endforeach</select></div>
-                    <div><label class="form-label">MSB</label>
-                        <select name="msb_sub_bidang" class="form-select"><option value="">--</option>@foreach($msbOptions as $o)<option value="{{ $o }}" {{ old('msb_sub_bidang', $item->msb_sub_bidang) === $o ? 'selected' : '' }}>{{ $o }}</option>@endforeach</select></div>
+
+                {{-- Buttons --}}
+                <div class="flex items-center gap-3 pt-2">
+                    <button type="submit" class="btn btn-primary">
+                        💾 Update Data
+                    </button>
+                    <a href="{{ route('admin.master-perangkat-aplikasi.index', ['section' => $section]) }}"
+                       class="btn btn-secondary">
+                        ✖ Batal
+                    </a>
                 </div>
-                <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200">
-                    <p class="text-sm font-bold text-slate-700 mb-3">🔒 Patch Status</p>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        @foreach(['firmware_patch'=>'Firmware','database_patch'=>'Database','network_device_patch'=>'Network','application_patch'=>'Application','os_patch'=>'OS','library_dependency_patch'=>'Library'] as $field => $label)
-                        <div><label class="form-label text-xs">{{ $label }}</label>
-                            <select name="{{ $field }}" class="form-select text-xs">
-                                @foreach(['⌛'=>'⌛ Pending','✅'=>'✅ Done','❌'=>'❌ N/A'] as $v => $l)
-                                    <option value="{{ $v }}" {{ old($field, $item->$field) === $v ? 'selected' : '' }}>{{ $l }}</option>
-                                @endforeach
-                            </select></div>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="flex gap-3"><button type="submit" class="btn btn-primary">💾 Update</button><a href="{{ route('perangkat-aplikasi.index') }}" class="btn btn-secondary">Batal</a></div>
             </form>
         </div>
     </div>
+
 </div>
 @endsection
