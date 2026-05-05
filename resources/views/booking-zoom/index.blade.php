@@ -112,16 +112,24 @@
                     <td class="text-xs">{{ $r->creator?->username ?? '-' }}</td>
                     <td class="text-xs text-slate-400">{{ $r->created_at ? \Carbon\Carbon::parse($r->created_at)->format('d M Y H:i') : '—' }}</td>
                     <td>
-                        <form method="POST" action="{{ route('booking-zoom.destroy', $r->id) }}" onsubmit="return confirm('Yakin hapus booking ini?')">
+                        <form method="POST" action="{{ route('booking-zoom.destroy', $r->id) }}" class="delete-form">
                             @csrf @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">🗑️</button>
+                            <button type="submit" class="btn btn-danger btn-sm" data-tippy-content="Hapus Booking">🗑️</button>
                         </form>
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="8" class="text-center py-12 text-text-muted">
-                    {{ $isFiltered ? '😕 Tidak ada data yang sesuai filter.' : 'Belum ada data booking zoom.' }}
-                </td></tr>
+                <tr>
+                    <td colspan="8" class="text-center py-12">
+                        <div class="flex flex-col items-center justify-center opacity-70">
+                            <svg class="w-16 h-16 mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                            </svg>
+                            <p class="text-slate-500 font-medium text-lg">{{ $isFiltered ? 'Data Tidak Ditemukan' : 'Belum Ada Data' }}</p>
+                            <p class="text-slate-400 text-sm mt-1">{{ $isFiltered ? 'Coba ubah filter pencarian Anda.' : 'Silakan tambah booking zoom baru untuk memulai.' }}</p>
+                        </div>
+                    </td>
+                </tr>
                 @endforelse
             </tbody>
         </table>

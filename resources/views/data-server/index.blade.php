@@ -94,19 +94,29 @@
                     </td>
                     <td>
                         <div class="flex gap-1 flex-wrap">
-                            <a href="{{ route('data-server.show', $s->id) }}" class="btn btn-success btn-sm !px-2">👁️</a>
+                            <a href="{{ route('data-server.show', $s->id) }}" class="btn btn-success btn-sm !px-2" data-tippy-content="Detail Server">👁️</a>
                             @if(auth()->user()->isAdmin())
-                                <a href="{{ route('data-server.edit', $s->id) }}" class="btn btn-warning btn-sm !px-2">✏️</a>
-                                <form method="POST" action="{{ route('data-server.destroy', $s->id) }}" class="inline" onsubmit="return confirm('Yakin hapus server ini?\n\nSemua history pemeliharaan juga akan terhapus.')">
+                                <a href="{{ route('data-server.edit', $s->id) }}" class="btn btn-warning btn-sm !px-2" data-tippy-content="Edit Server">✏️</a>
+                                <form method="POST" action="{{ route('data-server.destroy', $s->id) }}" class="inline delete-form">
                                     @csrf @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm !px-2">🗑️</button>
+                                    <button type="submit" class="btn btn-danger btn-sm !px-2" data-tippy-content="Hapus Server">🗑️</button>
                                 </form>
                             @endif
                         </div>
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="14" class="text-center py-12 text-text-muted">📦 Belum ada data server.</td></tr>
+                <tr>
+                    <td colspan="14" class="text-center py-12">
+                        <div class="flex flex-col items-center justify-center opacity-70">
+                            <svg class="w-16 h-16 mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                            </svg>
+                            <p class="text-slate-500 font-medium text-lg">{{ request('q') ? 'Data Tidak Ditemukan' : 'Belum Ada Data' }}</p>
+                            <p class="text-slate-400 text-sm mt-1">{{ request('q') ? 'Coba gunakan kata kunci pencarian lain.' : 'Silakan input data server baru untuk memulai.' }}</p>
+                        </div>
+                    </td>
+                </tr>
                 @endforelse
             </tbody>
         </table>
