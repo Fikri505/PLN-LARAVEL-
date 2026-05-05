@@ -115,13 +115,12 @@ $createUrl = route('admin.master-perangkat-aplikasi.create', ['section' => $sect
                                 <form
                                     method="POST"
                                     action="{{ $destroyUrl }}"
-                                    onsubmit="return confirm('Yakin ingin menghapus data ini?')"
-                                    class="inline"
+                                    class="inline delete-form"
                                 >
                                     @csrf
                                     @method('DELETE')
                                     <input type="hidden" name="type" value="{{ $section }}">
-                                    <button type="submit" class="btn btn-danger btn-sm !px-2 !py-1 text-xs">
+                                    <button type="submit" class="btn btn-danger btn-sm !px-2 !py-1 text-xs" data-tippy-content="Hapus {{ $tabLabels[$section] }}">
                                         🗑️ Hapus
                                     </button>
                                 </form>
@@ -130,12 +129,14 @@ $createUrl = route('admin.master-perangkat-aplikasi.create', ['section' => $sect
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4" class="text-center py-10 text-slate-400">
+                        <td colspan="4" class="text-center py-12">
                             @php $emptyCreateUrl = route('admin.master-perangkat-aplikasi.create', ['section' => $section]); @endphp
-                            <div class="flex flex-col items-center gap-2">
-                                <span class="text-3xl">📭</span>
-                                <p class="text-sm">Belum ada data {{ strtolower($tabLabels[$section]) }}</p>
-                                <a href="{{ $emptyCreateUrl }}" class="btn btn-primary btn-sm mt-1">
+                            <div class="flex flex-col items-center justify-center opacity-70">
+                                <svg class="w-16 h-16 mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                                </svg>
+                                <p class="text-slate-500 font-medium text-lg">Belum Ada Data {{ $tabLabels[$section] }}</p>
+                                <a href="{{ $emptyCreateUrl }}" class="btn btn-primary btn-sm mt-3">
                                     ➕ Tambah Sekarang
                                 </a>
                             </div>
