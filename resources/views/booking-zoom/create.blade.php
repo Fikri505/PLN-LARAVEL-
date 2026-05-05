@@ -2,7 +2,7 @@
 @section('title', 'Booking Zoom Baru')
 
 @section('content')
-<div class="max-w-3xl space-y-6">
+<div class="w-full space-y-6">
     <div class="card animate-fade-in-up">
         <div class="card-header flex items-center justify-between">
             <div>

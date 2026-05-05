@@ -1,7 +1,7 @@
     @extends('layouts.app')
 @section('title', 'Edit Perangkat Aplikasi')
 @section('content')
-<div class="max-w-4xl">
+<div class="w-full">
     <div class="card animate-fade-in-up">
         <div class="card-header flex items-center justify-between">
             <h2 class="text-lg font-bold">✏️ Edit — {{ $item->jenis_perangkat }}</h2>

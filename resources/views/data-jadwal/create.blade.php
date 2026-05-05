@@ -2,7 +2,7 @@
 @section('title', 'Entry Jadwal Baru')
 
 @section('content')
-<div class="max-w-4xl">
+<div class="w-full">
     <div class="card animate-fade-in-up">
         <div class="card-header">
             <h2 class="text-lg font-bold">📅 Entry Jadwal Pemesanan Ruangan</h2>
