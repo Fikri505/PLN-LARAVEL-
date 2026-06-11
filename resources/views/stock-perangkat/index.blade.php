@@ -5,7 +5,7 @@
     <div class="card-header flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
             <h2 class="text-lg font-bold">📦 Stock Perangkat IT</h2>
-            <p class="text-xs text-text-muted mt-1">Total: <strong>{{ $items->total() }}</strong> item</p>
+            <p class="text-xs text-text-muted mt-1">Total: <strong>{{ $items->total() }}</strong> item | Halaman {{ $items->currentPage() }} dari {{ $items->lastPage() }}</p>
         </div>
         <div class="flex gap-2">
             <a href="{{ route('mutasi-perangkat.index') }}" class="btn btn-secondary btn-sm">🔄 Mutasi</a>
@@ -16,10 +16,11 @@
     {{-- Search & Filter --}}
     <div class="px-6 py-3 bg-slate-50/80 border-b border-slate-100">
         <form method="GET" action="{{ route('stock-perangkat.index') }}" class="flex flex-wrap gap-2">
+            <input type="hidden" name="perPage" value="{{ $perPage }}">
             <div class="relative flex-1 min-w-[180px]">
                 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
                 <input type="text" name="q" value="{{ request('q') }}"
-                       placeholder="Cari nama, type, kondisi..."
+                       placeholder="Cari nama, type, kondisi, keterangan..."
                        class="form-input !py-2 !pl-9 text-xs">
             </div>
             <select name="status" class="form-select !py-2 text-xs w-auto">
@@ -29,10 +30,21 @@
             </select>
             <button type="submit" class="btn btn-primary btn-sm">Cari</button>
             @if(request('q') || request('status'))
-                <a href="{{ route('stock-perangkat.index') }}" class="btn btn-secondary btn-sm">✕ Reset</a>
+                <a href="{{ route('stock-perangkat.index', ['perPage' => $perPage]) }}" class="btn btn-secondary btn-sm">✕ Reset</a>
             @endif
         </form>
+        @if(request('q'))
+            <p class="text-xs text-blue-600 bg-blue-50 border border-blue-200 rounded-lg px-3 py-1.5 mt-2 inline-block">
+                🔍 Menampilkan <strong>{{ $items->total() }}</strong> hasil untuk "<strong>{{ request('q') }}</strong>"
+            </p>
+        @endif
     </div>
+
+    @if(session('success'))
+        <div class="mx-6 mt-4 bg-green-50 border border-green-200 text-green-700 rounded-lg px-4 py-3 text-sm">
+            ✅ {{ session('success') }}
+        </div>
+    @endif
 
     <div class="overflow-x-auto">
         <table class="data-table">
@@ -109,8 +121,11 @@
         </table>
     </div>
 
-    @if($items->hasPages())
-        <div class="card-body border-t border-slate-100">{{ $items->links() }}</div>
-    @endif
+    @include('layouts.partials.pagination', [
+        'paginator'      => $items,
+        'routeUrl'       => route('stock-perangkat.index'),
+        'currentPerPage' => $perPage,
+        'queryParams'    => request()->except('perPage', 'page'),
+    ])
 </div>
 @endsection

@@ -9,6 +9,11 @@ class StockPerangkatController extends Controller
 {
     public function index(Request $request)
     {
+        $perPage = (int) $request->get('perPage', 10);
+        if (!in_array($perPage, [5, 10, 15, 20, 30])) {
+            $perPage = 10;
+        }
+
         $query = StockPerangkat::with('creator');
 
         if ($request->filled('q')) {
@@ -17,6 +22,7 @@ class StockPerangkatController extends Controller
                 $q->where('nama_barang', 'like', $like)
                   ->orWhere('type_barang', 'like', $like)
                   ->orWhere('kondisi', 'like', $like)
+                  ->orWhere('keterangan', 'like', $like)
             );
         }
 
@@ -25,10 +31,10 @@ class StockPerangkatController extends Controller
         }
 
         $items = $query->orderBy('created_at', 'desc')
-                       ->paginate(10)
+                       ->paginate($perPage)
                        ->withQueryString();
 
-        return view('stock-perangkat.index', compact('items'))
+        return view('stock-perangkat.index', compact('items', 'perPage'))
                ->with('activeMenu', 'stock-perangkat');
     }
 
@@ -69,13 +75,12 @@ class StockPerangkatController extends Controller
     {
         $request->validate([
             'nama_barang' => 'required|string|max:255',
-            'jumlah'      => 'required|integer|min:1',
             'status'      => 'required|in:aktif,non-aktif',
             'kondisi'     => 'required|in:baru,normal',
         ]);
 
         $item = StockPerangkat::findOrFail($id);
-        $data = $request->only('nama_barang', 'type_barang', 'jumlah', 'status', 'kondisi', 'keterangan');
+        $data = $request->only('nama_barang', 'type_barang', 'status', 'kondisi', 'keterangan');
 
         if ($request->hasFile('foto')) {
             $data['foto'] = $request->file('foto')->store('stock_images', 'public');

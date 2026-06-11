@@ -8,7 +8,12 @@ class MutasiPerangkat extends Model
 {
     protected $table = 'mutasi_perangkat';
     protected $fillable = [
-        'stock_perangkat_id', 'jumlah', 'kondisi', 'keterangan', 'created_by'
+        'stock_perangkat_id',
+        'tipe',
+        'jumlah',
+        'kondisi',
+        'keterangan',
+        'created_by',
     ];
 
     public function perangkat()
