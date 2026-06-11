@@ -25,7 +25,7 @@ $createUrl = route('admin.master-perangkat-aplikasi.create', ['section' => $sect
             </div>
         </div>
 
-        {{-- Toolbar --}}
+                {{-- Toolbar --}}
         <div class="card-body border-b border-slate-100">
             <div class="flex items-center justify-end gap-3">
 
@@ -34,25 +34,25 @@ $createUrl = route('admin.master-perangkat-aplikasi.create', ['section' => $sect
                     <button
                         id="sectionDropdownBtn"
                         type="button"
-                        class="btn btn-secondary btn-sm flex items-center gap-2"
+                        class="btn btn-sm flex items-center gap-1.5 bg-white !text-slate-700 hover:bg-slate-50"
                         onclick="toggleSectionDropdown()"
                     >
-                        📂 Pilih Master:
-                        <span class="font-semibold text-primary">{{ $tabLabels[$section] }}</span>
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        {{ $icons[$section] ?? '📄' }}
+                        <span>{{ $tabLabels[$section] }}</span>
+                        <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
                     </button>
 
                     <div
                         id="sectionDropdown"
-                        class="hidden absolute z-50 top-full right-0 mt-1 bg-white border border-slate-200 rounded-lg shadow-lg min-w-[210px]"
+                        class="hidden absolute z-50 top-full right-0 mt-1 bg-white border border-slate-200 rounded-lg shadow-lg min-w-[190px]"
                     >
                         @foreach($tabLabels as $tabKey => $tabLabel)
                         @php $tabUrl = route('admin.master-perangkat-aplikasi.index', ['section' => $tabKey]); @endphp
                         <a
                             href="{{ $tabUrl }}"
-                            class="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-slate-50 transition-colors
+                            class="flex items-center gap-2 px-3 py-2 text-xs hover:bg-slate-50 transition-colors
                                 {{ $section === $tabKey ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-700' }}"
                         >
                             {{ $icons[$tabKey] ?? '📄' }} {{ $tabLabel }}
@@ -61,7 +61,7 @@ $createUrl = route('admin.master-perangkat-aplikasi.create', ['section' => $sect
                     </div>
                 </div>
 
-                {{-- Button Tambah --}}
+                {{-- Button Tambah — TIDAK DIUBAH --}}
                 <a href="{{ $createUrl }}" class="btn btn-primary btn-sm flex items-center gap-1">
                     ➕ Input {{ $tabLabels[$section] }}
                 </a>
