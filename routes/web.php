@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MutasiPerangkatController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
@@ -83,6 +84,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/stock-perangkat/{id}/edit', [StockPerangkatController::class, 'edit'])->name('stock-perangkat.edit');
         Route::put('/stock-perangkat/{id}', [StockPerangkatController::class, 'update'])->name('stock-perangkat.update');
         Route::delete('/stock-perangkat/{id}', [StockPerangkatController::class, 'destroy'])->name('stock-perangkat.destroy');
+        Route::get('/mutasi-perangkat', [MutasiPerangkatController::class, 'index'])->name('mutasi-perangkat.index');
+        Route::get('/stock-perangkat/{id}/mutasi/create', [MutasiPerangkatController::class, 'create'])->name('mutasi-perangkat.create');
+        Route::post('/stock-perangkat/{id}/mutasi', [MutasiPerangkatController::class, 'store'])->name('mutasi-perangkat.store');
+        Route::delete('/mutasi-perangkat/{id}', [MutasiPerangkatController::class, 'destroy'])->name('mutasi-perangkat.destroy');
     });
 
     // Perangkat Aplikasi
